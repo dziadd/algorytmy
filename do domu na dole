@@ -1,4 +1,218 @@
-namespace windowsforms1
+using System;
+using System.Text;
+using System.Windows.Forms;
+
+namespace WinFormsApp2
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent(); // Inicjalizacja komponentów formularza
+        }
+
+        // Obsługa kliknięcia przycisku 1 - Sortowanie bąbelkowe
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 }; // Tablica do posortowania
+            BubbleSort(tab); // Wywołanie metody sortującej
+            MessageBox.Show(TabToString(tab)); // Wyświetlenie wyniku
+        }
+
+        // Obsługa kliknięcia przycisku 2 - Sortowanie przez wstawianie
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 }; // Tablica do posortowania
+            InsertSort(tab); // Wywołanie metody sortującej
+            MessageBox.Show(TabToString(tab)); // Wyświetlenie wyniku
+        }
+
+        // Obsługa kliknięcia przycisku 3 - Sortowanie szybkie
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 }; // Tablica do posortowania
+            QuickSort(tab, 0, tab.Length - 1); // Wywołanie metody sortującej
+            MessageBox.Show(TabToString(tab)); // Wyświetlenie wyniku
+        }
+
+        // Obsługa kliknięcia przycisku 4 - Sortowanie przez scalanie
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 }; // Tablica do posortowania
+            MergeSort(tab, 0, tab.Length - 1); // Wywołanie metody sortującej
+            MessageBox.Show(TabToString(tab)); // Wyświetlenie wyniku
+        }
+
+        // Obsługa kliknięcia przycisku 5 - Sortowanie przez zliczanie
+        private void button5_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 }; // Tablica do posortowania
+            CountingSort(tab); // Wywołanie metody sortującej
+            MessageBox.Show(TabToString(tab)); // Wyświetlenie wyniku
+        }
+
+        // Metoda sortowania bąbelkowego
+        private void BubbleSort(int[] tab)
+        {
+            int temp; // Zmienna pomocnicza do wymiany
+            for (int i = 0; i < tab.Length; i++) // Zewnętrzna pętla iterująca przez tablicę
+            {
+                for (int j = 0; j < tab.Length - 1; j++) // Wewnętrzna pętla do porównywania elementów
+                {
+                    // Jeśli element jest większy od następnego, zamień je miejscami
+                    if (tab[j] > tab[j + 1])
+                    {
+                        temp = tab[j]; // Przechowanie większego elementu
+                        tab[j] = tab[j + 1]; // Przypisanie mniejszego elementu
+                        tab[j + 1] = temp; // Wstawienie większego elementu
+                    }
+                }
+            }
+        }
+
+        // Metoda sortowania przez wstawianie
+        private void InsertSort(int[] tab)
+        {
+            for (int i = 1; i < tab.Length; i++) // Rozpoczęcie od drugiego elementu
+            {
+                int key = tab[i]; // Klucz to bieżący element
+                int j = i - 1; // Wskaźnik do porównania z poprzednimi elementami
+                // Przesuwanie elementów, które są większe od klucza
+                while (j >= 0 && tab[j] > key)
+                {
+                    tab[j + 1] = tab[j]; // Przesunięcie elementu
+                    j--; // Przesunięcie wskaźnika
+                }
+                tab[j + 1] = key; // Wstawienie klucza w odpowiednie miejsce
+            }
+        }
+
+        // Metoda sortowania szybkiego
+        private void QuickSort(int[] tab, int left, int right)
+        {
+            if (left < right) // Kontynuuj, jeśli są co najmniej dwa elementy do posortowania
+            {
+                int pivotIndex = Partition(tab, left, right); // Podział tablicy na dwie części
+                QuickSort(tab, left, pivotIndex - 1); // Rekurencyjne sortowanie lewej części
+                QuickSort(tab, pivotIndex + 1, right); // Rekurencyjne sortowanie prawej części
+            }
+        }
+
+        // Metoda podziału dla sortowania szybkiego
+        private int Partition(int[] tab, int left, int right)
+        {
+            int pivot = tab[right]; // Wybór ostatniego elementu jako pivota
+            int i = left - 1; // Wskaźnik dla mniejszych elementów
+
+            for (int j = left; j < right; j++) // Iteracja przez wszystkie elementy
+            {
+                // Jeśli element jest mniejszy lub równy pivotowi
+                if (tab[j] <= pivot)
+                {
+                    i++; // Inkrementacja wskaźnika
+                    Swap(tab, i, j); // Wymiana elementów
+                }
+            }
+            Swap(tab, i + 1, right); // Przeniesienie pivota na właściwą pozycję
+            return i + 1; // Zwrócenie indeksu pivota
+        }
+
+        // Metoda sortowania przez scalanie
+        private void MergeSort(int[] tab, int left, int right)
+        {
+            if (left < right) // Jeśli jest więcej niż jeden element
+            {
+                int mid = (left + right) / 2; // Wyznaczenie środka
+                MergeSort(tab, left, mid); // Rekurencyjne sortowanie lewej części
+                MergeSort(tab, mid + 1, right); // Rekurencyjne sortowanie prawej części
+                Merge(tab, left, mid, right); // Scalanie posortowanych części
+            }
+        }
+
+        // Metoda scalania dwóch podtablic
+        private void Merge(int[] tab, int left, int mid, int right)
+        {
+            int n1 = mid - left + 1; // Rozmiar lewej podtablicy
+            int n2 = right - mid; // Rozmiar prawej podtablicy
+
+            int[] L = new int[n1]; // Lewa podtablica
+            int[] R = new int[n2]; // Prawa podtablica
+
+            // Kopiowanie danych do tymczasowych tablic
+            Array.Copy(tab, left, L, 0, n1);
+            Array.Copy(tab, mid + 1, R, 0, n2);
+
+            // Scalanie tymczasowych tablic z powrotem do głównej tablicy
+            int i = 0, j = 0, k = left; // Wskaźniki do przeglądania tablic
+
+            // Scalanie elementów z L i R do tablicy
+            while (i < n1 && j < n2)
+            {
+                if (L[i] <= R[j])
+                {
+                    tab[k++] = L[i++]; // Wstawienie mniejszego elementu
+                }
+                else
+                {
+                    tab[k++] = R[j++]; // Wstawienie mniejszego elementu
+                }
+            }
+
+            // Kopiowanie pozostałych elementów L[] jeśli są
+            while (i < n1)
+            {
+                tab[k++] = L[i++];
+            }
+
+            // Kopiowanie pozostałych elementów R[] jeśli są
+            while (j < n2)
+            {
+                tab[k++] = R[j++];
+            }
+        }
+
+        // Metoda sortowania przez zliczanie
+        private void CountingSort(int[] tab)
+        {
+            int max = tab[0]; // Znalezienie największego elementu
+            for (int i = 1; i < tab.Length; i++)
+            {
+                if (tab[i] > max)
+                {
+                    max = tab[i]; // Aktualizacja maksymalnej wartości
+                }
+            }
+
+            int[] count = new int[max + 1]; // Tworzenie tablicy do zliczania
+            int[] output = new int[tab.Length]; // Tablica wyjściowa
+
+            // Zliczanie wystąpień każdego numeru
+            for (int i = 0; i < tab.Length; i++)
+            {
+                count[tab[i]]++; // Zwiększenie licznika dla danego numeru
+            }
+
+            // Zmiana count[i] tak, aby zawierała rzeczywistą po
+
+
+
+
+
+
+
+
+
+
+
+
+//// bez kom
+
+
+using System;
+using System.Text;
+using System.Windows.Forms;
+
+namespace WinFormsApp2
 {
     public partial class Form1 : Form
     {
@@ -9,33 +223,194 @@ namespace windowsforms1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int t = 0;
-            int[] tab = {3,4,10,2,14,1};
-            for(int i = 0; i < tab.Length; i++)
+            int[] tab = { 3, 4, 10, 2, 14, 1 };
+            BubbleSort(tab);
+            MessageBox.Show(TabToString(tab));
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 };
+            InsertSort(tab);
+            MessageBox.Show(TabToString(tab));
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 };
+            QuickSort(tab, 0, tab.Length - 1);
+            MessageBox.Show(TabToString(tab));
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 };
+            MergeSort(tab, 0, tab.Length - 1);
+            MessageBox.Show(TabToString(tab));
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 3, 4, 10, 2, 14, 1 };
+            CountingSort(tab);
+            MessageBox.Show(TabToString(tab));
+        }
+
+        private void BubbleSort(int[] tab)
+        {
+            int temp;
+            for (int i = 0; i < tab.Length; i++)
             {
-                for (int j = 0; j< tab.Length - 1; j++)
+                for (int j = 0; j < tab.Length - 1; j++)
                 {
-                    if (tab[j] > tab[j+1])
+                    if (tab[j] > tab[j + 1])
                     {
-                        t = tab[j];
-                        tab[j] = tab[j+1];
-                        tab[j+1] = t;
+                        temp = tab[j];
+                        tab[j] = tab[j + 1];
+                        tab[j + 1] = temp;
                     }
                 }
             }
-            string ToString(int[] tab)
+        }
+
+        private void InsertSort(int[] tab)
+        {
+            for (int i = 1; i < tab.Length; i++)
             {
-                string wynik = "";
-                for(int i = 0;i<tab.Length;i++)
+                int key = tab[i];
+                int j = i - 1;
+                while (j >= 0 && tab[j] > key)
                 {
-                    wynik += tab[i] + "_";
+                    tab[j + 1] = tab[j];
+                    j--;
                 }
-                return wynik;
+                tab[j + 1] = key;
             }
-            MessageBox.Show("");
+        }
+
+        private void QuickSort(int[] tab, int left, int right)
+        {
+            if (left < right)
+            {
+                int pivotIndex = Partition(tab, left, right);
+                QuickSort(tab, left, pivotIndex - 1);
+                QuickSort(tab, pivotIndex + 1, right);
+            }
+        }
+
+        private int Partition(int[] tab, int left, int right)
+        {
+            int pivot = tab[right];
+            int i = left - 1;
+
+            for (int j = left; j < right; j++)
+            {
+                if (tab[j] <= pivot)
+                {
+                    i++;
+                    Swap(tab, i, j);
+                }
+            }
+            Swap(tab, i + 1, right);
+            return i + 1;
+        }
+
+        private void MergeSort(int[] tab, int left, int right)
+        {
+            if (left < right)
+            {
+                int mid = (left + right) / 2;
+                MergeSort(tab, left, mid);
+                MergeSort(tab, mid + 1, right);
+                Merge(tab, left, mid, right);
+            }
+        }
+
+        private void Merge(int[] tab, int left, int mid, int right)
+        {
+            int n1 = mid - left + 1;
+            int n2 = right - mid;
+
+            int[] L = new int[n1];
+            int[] R = new int[n2];
+
+            Array.Copy(tab, left, L, 0, n1);
+            Array.Copy(tab, mid + 1, R, 0, n2);
+
+            int i = 0, j = 0, k = left;
+
+            while (i < n1 && j < n2)
+            {
+                if (L[i] <= R[j])
+                {
+                    tab[k++] = L[i++];
+                }
+                else
+                {
+                    tab[k++] = R[j++];
+                }
+            }
+
+            while (i < n1)
+            {
+                tab[k++] = L[i++];
+            }
+
+            while (j < n2)
+            {
+                tab[k++] = R[j++];
+            }
+        }
+
+        private void CountingSort(int[] tab)
+        {
+            int max = tab[0];
+            for (int i = 1; i < tab.Length; i++)
+            {
+                if (tab[i] > max)
+                {
+                    max = tab[i];
+                }
+            }
+
+            int[] count = new int[max + 1];
+            int[] output = new int[tab.Length];
+
+            for (int i = 0; i < tab.Length; i++)
+            {
+                count[tab[i]]++;
+            }
+
+            for (int i = 1; i <= max; i++)
+            {
+                count[i] += count[i - 1];
+            }
+
+            for (int i = tab.Length - 1; i >= 0; i--)
+            {
+                output[count[tab[i]] - 1] = tab[i];
+                count[tab[i]]--;
+            }
+
+            Array.Copy(output, tab, tab.Length);
+        }
+
+        private void Swap(int[] tab, int i, int j)
+        {
+            int temp = tab[i];
+            tab[i] = tab[j];
+            tab[j] = temp;
+        }
+
+        private string TabToString(int[] tab)
+        {
+            StringBuilder result = new StringBuilder();
+            for (int i = 0; i < tab.Length; i++)
+            {
+                result.Append(tab[i]);
+                if (i < tab.Length - 1) result.Append(" ");
+            }
+            return result.ToString();
         }
     }
 }
-
-
-/// Zadanie insert sort do domu. Po wcisnieciu guzika ma sortowac tablice do labela

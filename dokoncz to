@@ -1,0 +1,33 @@
+namespace WinFormsApp2
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int[] tab = { 8, 3, 7, 5, 2, 1, 4 };
+            MS(tab, 0, tab.Length - 1);
+        }
+
+        private void MS(int[] tab, int p, int r)
+        {
+            if (p < r) 
+            {
+                int q = (p + r) / 2;
+
+                MS(tab, p, q);
+                MS(tab, q + 1, r);
+                SCAL(tab, p, q, r);
+            }
+        }
+
+        private void SCAL(int[] tab, int p, int q, int r)
+        {
+            
+        }
+    }
+}

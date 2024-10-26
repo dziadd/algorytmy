@@ -70,3 +70,10 @@ namespace WinFormsApp2
 
 dopisz, dokoncz metody removefirst removelast i tostring zrob gui testujace metody
 
+przeskakiwanie
+
+var tmp = this.head;
+while(tmp != this.tail){
+tmp = tmp.n;
+}
+

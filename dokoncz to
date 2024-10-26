@@ -31,3 +31,40 @@ namespace WinFormsApp2
         }
     }
 }
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WinFormsApp2
+{
+    internal class List
+    {
+        public NodeL head;
+        public NodeL tail;
+        public int count = 0;
+        void AddFirst(int liczba)
+        {
+            
+        }
+        void AddLast(int liczba)
+        {
+            var tmp = new NodeL(7);
+            tmp.p = this.tail;
+            this.tail.n = tmp;
+        }
+        NodeL RemoveFirst() { }
+
+        NodeL RemoveLast() { }
+
+        string ToString() // 3 8 7
+
+        
+    }
+}
+

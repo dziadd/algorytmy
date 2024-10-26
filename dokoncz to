@@ -68,3 +68,5 @@ namespace WinFormsApp2
     }
 }
 
+dopisz, dokoncz metody removefirst removelast i tostring zrob gui testujace metody
+

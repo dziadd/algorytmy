@@ -73,7 +73,7 @@ dopisz, dokoncz metody removefirst removelast i tostring zrob gui testujace meto
 przeskakiwanie
 
 var tmp = this.head;
-while(tmp != this.tail){
+while(tmp == null){
 tmp = tmp.n;
 }
 

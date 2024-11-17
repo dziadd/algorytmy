@@ -77,3 +77,6 @@ while(tmp == null){
 tmp = tmp.n;
 }
 
+
+
+zrob addfirst removefirst removelast get toString

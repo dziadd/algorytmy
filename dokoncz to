@@ -78,5 +78,7 @@ tmp = tmp.n;
 }
 
 
+kasowanie wezla to z tablicy
+
 
 zrob addfirst removefirst removelast get(int index)/index 0 - pierwszy elemnt, toString,  gui

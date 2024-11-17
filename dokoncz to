@@ -79,4 +79,4 @@ tmp = tmp.n;
 
 
 
-zrob addfirst removefirst removelast get toString
+zrob addfirst removefirst removelast get(int index) toString

@@ -1,0 +1,164 @@
+using System;
+
+namespace MS
+{
+    internal class NodeT
+    {
+        public NodeT rodzic;
+        public NodeT lewe;
+        public NodeT prawe;
+        public int data;
+
+        public NodeT(int liczba)
+        {
+            this.data = liczba;
+        }
+    }
+
+    internal class BST
+    {
+        public NodeT root;
+
+        public NodeT Add(int liczba)
+        {
+            var dziecko = new NodeT(liczba);
+            if (this.root == null)
+            {
+                this.root = dziecko;
+                return dziecko;
+            }
+            else
+            {
+                var rodzic = this.ZnajdzRodzica(dziecko.data);
+                dziecko.rodzic = rodzic;
+
+                if (dziecko.data < rodzic.data)
+                {
+                    rodzic.lewe = dziecko;
+                }
+                else
+                {
+                    rodzic.prawe = dziecko;
+                }
+
+                return dziecko;
+            }
+        }
+
+        private NodeT ZnajdzRodzica(int liczba)
+        {
+            var rodzic = this.root;
+
+            while (true)
+            {
+                if (liczba < rodzic.data)
+                {
+                    if (rodzic.lewe == null)
+                    {
+                        return rodzic;
+                    }
+                    rodzic = rodzic.lewe;
+                }
+                else
+                {
+                    if (rodzic.prawe == null)
+                    {
+                        return rodzic;
+                    }
+                    rodzic = rodzic.prawe;
+                }
+            }
+        }
+
+        public void PrintInOrder(NodeT node)
+        {
+            if (node == null)
+                return;
+
+            PrintInOrder(node.lewe);
+            Console.WriteLine(node.data);
+            PrintInOrder(node.prawe);
+        }
+
+        public void Remove(int liczba)
+        {
+            var nodeToRemove = Find(liczba);
+
+            if (nodeToRemove == null)
+            {
+                Console.WriteLine("Element nie istnieje w drzewie.");
+                return;
+            }
+
+            if (nodeToRemove.lewe == null && nodeToRemove.prawe == null)
+            {
+                if (nodeToRemove.rodzic == null)
+                {
+                    this.root = null;
+                }
+                else
+                {
+                    if (nodeToRemove.rodzic.lewe == nodeToRemove)
+                    {
+                        nodeToRemove.rodzic.lewe = null;
+                    }
+                    else
+                    {
+                        nodeToRemove.rodzic.prawe = null;
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("W tej wersji obsługiwane jest tylko usuwanie liści (brak dzieci).");
+            }
+        }
+
+        public NodeT Find(int liczba)
+        {
+            var current = this.root;
+
+            while (current != null)
+            {
+                if (liczba == current.data)
+                {
+                    return current;
+                }
+                else if (liczba < current.data)
+                {
+                    current = current.lewe;
+                }
+                else
+                {
+                    current = current.prawe;
+                }
+            }
+
+            return null;
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var drzewo = new BST();
+
+            drzewo.Add(10);
+            drzewo.Add(5);
+            drzewo.Add(15);
+            drzewo.Add(3);
+            drzewo.Add(7);
+            drzewo.Add(12);
+            drzewo.Add(18);
+
+            Console.WriteLine("Drzewo BST:");
+            drzewo.PrintInOrder(drzewo.root);
+
+            Console.WriteLine("\nUsuwanie węzła 3:");
+            drzewo.Remove(3);
+            Console.WriteLine("\nDrzewo BST po usunięciu 3:");
+            drzewo.PrintInOrder(drzewo.root);
+        }
+    }
+}

@@ -1,0 +1,158 @@
+using System;
+
+class NodeG
+{
+    public int Data; 
+
+    public NodeG(int data)
+    {
+        Data = data;
+    }
+}
+
+class Edge
+{
+    public NodeG Start; 
+    public NodeG End;   
+    public int Weight;  
+
+    public Edge(NodeG start, NodeG end, int weight)
+    {
+        Start = start;
+        End = end;
+        Weight = weight;
+    }
+}
+
+class Graph
+{
+    public NodeG[] Nodes;    
+    public Edge[] Edges;     
+    public int NodeCount;    
+    public int EdgeCount;    
+
+    public Graph(int nodeCount, int edgeCount)
+    {
+        NodeCount = nodeCount;
+        EdgeCount = edgeCount;
+        Nodes = new NodeG[nodeCount];
+        Edges = new Edge[edgeCount];
+    }
+
+    
+    public int Find(int[] parent, int i)
+    {
+        while (parent[i] != i)
+        {
+            i = parent[i];
+        }
+        return i;
+    }
+
+    
+    public void Union(int[] parent, int[] rank, int x, int y)
+    {
+        int xroot = Find(parent, x);
+        int yroot = Find(parent, y);
+
+        if (rank[xroot] < rank[yroot])
+        {
+            parent[xroot] = yroot;
+        }
+        else if (rank[xroot] > rank[yroot])
+        {
+            parent[yroot] = xroot;
+        }
+        else
+        {
+            parent[yroot] = xroot;
+            rank[xroot]++;
+        }
+    }
+
+    // Algorytm Kruskala
+    public Edge[] KruskalMST()
+    {
+        
+        Edge[] result = new Edge[NodeCount - 1];
+        int resultIndex = 0;
+
+        for (int i = 0; i < EdgeCount - 1; i++)
+        {
+            for (int j = 0; j < EdgeCount - i - 1; j++)
+            {
+                if (Edges[j].Weight > Edges[j + 1].Weight)
+                {
+                    Edge temp = Edges[j];
+                    Edges[j] = Edges[j + 1];
+                    Edges[j + 1] = temp;
+                }
+            }
+        }
+
+        
+        int[] parent = new int[NodeCount];
+        int[] rank = new int[NodeCount];
+
+        
+        for (int i = 0; i < NodeCount; i++)
+        {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+
+        
+        int edgeIndex = 0;
+        while (resultIndex < NodeCount - 1 && edgeIndex < EdgeCount)
+        {
+            Edge nextEdge = Edges[edgeIndex++];
+            int x = Find(parent, nextEdge.Start.Data);
+            int y = Find(parent, nextEdge.End.Data);
+
+            
+            if (x != y)
+            {
+                result[resultIndex++] = nextEdge;
+                Union(parent, rank, x, y);
+            }
+        }
+
+        return result;
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        
+        int nodeCount = 4;
+        int edgeCount = 5;
+
+       
+        Graph graph = new Graph(nodeCount, edgeCount);
+
+        
+        for (int i = 0; i < nodeCount; i++)
+        {
+            graph.Nodes[i] = new NodeG(i);
+        }
+
+        
+        graph.Edges[0] = new Edge(graph.Nodes[0], graph.Nodes[1], 10);
+        graph.Edges[1] = new Edge(graph.Nodes[0], graph.Nodes[2], 6);
+        graph.Edges[2] = new Edge(graph.Nodes[0], graph.Nodes[3], 5);
+        graph.Edges[3] = new Edge(graph.Nodes[1], graph.Nodes[3], 15);
+        graph.Edges[4] = new Edge(graph.Nodes[2], graph.Nodes[3], 4);
+
+        Edge[] mst = graph.KruskalMST();
+
+        
+        Console.WriteLine("Minimalne drzewo rozpinające:");
+        for (int i = 0; i < mst.Length; i++)
+        {
+            Console.WriteLine($"Krawędź: {mst[i].Start.Data} - {mst[i].End.Data}, Waga: {mst[i].Weight}");
+        }
+    }
+}
+

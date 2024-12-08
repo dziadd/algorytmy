@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 
 class NodeG
 {
@@ -26,10 +27,10 @@ class Edge
 
 class Graph
 {
-    public NodeG[] Nodes;    
-    public Edge[] Edges;     
-    public int NodeCount;    
-    public int EdgeCount;    
+    public NodeG[] Nodes;
+    public Edge[] Edges;
+    public int NodeCount;
+    public int EdgeCount;
 
     public Graph(int nodeCount, int edgeCount)
     {
@@ -39,7 +40,7 @@ class Graph
         Edges = new Edge[edgeCount];
     }
 
-    
+
     public int Find(int[] parent, int i)
     {
         while (parent[i] != i)
@@ -49,7 +50,7 @@ class Graph
         return i;
     }
 
-    
+
     public void Union(int[] parent, int[] rank, int x, int y)
     {
         int xroot = Find(parent, x);
@@ -70,10 +71,12 @@ class Graph
         }
     }
 
+
+
     // Algorytm Kruskala
     public Edge[] KruskalMST()
     {
-        
+
         Edge[] result = new Edge[NodeCount - 1];
         int resultIndex = 0;
 
@@ -90,18 +93,18 @@ class Graph
             }
         }
 
-        
+
         int[] parent = new int[NodeCount];
         int[] rank = new int[NodeCount];
 
-        
+
         for (int i = 0; i < NodeCount; i++)
         {
             parent[i] = i;
             rank[i] = 0;
         }
 
-        
+
         int edgeIndex = 0;
         while (resultIndex < NodeCount - 1 && edgeIndex < EdgeCount)
         {
@@ -109,7 +112,7 @@ class Graph
             int x = Find(parent, nextEdge.Start.Data);
             int y = Find(parent, nextEdge.End.Data);
 
-            
+
             if (x != y)
             {
                 result[resultIndex++] = nextEdge;
@@ -119,7 +122,42 @@ class Graph
 
         return result;
     }
+
+    void Add(Edge k)
+    {
+        if (this.Edges.Contains(k))
+        {
+            this.Edge.Add(k);
+        }
+
+        if (!this.Nodes.Contains(k.start))
+        {
+            this.Node.Add(k.start);
+        }
+
+    }
+
+    Graf(Edge k)
+    {
+        this.Add(k);
+    }
 }
+
+void join(Graph g)
+{
+    foreach (var k in g.Edges)
+        this.Add(k);
+}
+
+int NaNowychWęzłów(Edge k)
+{
+    int wynik = 0;
+    if (!nodes.Contains(k.Start))
+        wynik++;
+    End;
+    return wynik
+}
+
 
 class Program
 {

@@ -1,0 +1,140 @@
+using System.Collections;
+
+namespace kolokwium
+{
+    public partial class Form1 : Form
+    {
+        int[] wygenerowanatablica;
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        static int[] generujtab(int dlugosc, int min, int max)
+        {
+            int[] tab = new int[dlugosc];
+            Random random = new Random();
+            for (int i = 0; i < dlugosc; i++)
+            {
+                tab[i] = random.Next(min, max);
+            }
+
+            return tab;
+
+        }
+
+
+
+        static void bubble(int[] tab)
+        {
+            int temp = 0;
+            for (int i = 0; i < tab.Length; i++)
+            {
+                for (int j = 0; j < tab.Length - 1; j++)
+                {
+                    if (tab[j] > tab[j + 1])
+                    {
+                        temp = tab[j];
+                        tab[j] = tab[j + 1];
+                        tab[j + 1] = temp;
+                    }
+                }
+            }
+        }
+
+
+
+        static void insert(int[] tab)
+        {
+            for (int i = 0; i < tab.Length; i++)
+            {
+                int klucz = tab[i];
+                int j = i - 1;
+                while (j >= 0 && tab[j] > klucz)
+                {
+                    tab[j + 1] = tab[j];
+                    j = j - 1;
+                }
+                tab[j + 1] = klucz;
+            }
+        }
+
+        static void quick(int[] tab, int l, int p)
+        {
+            if (l < p)
+            {
+                int pivot = tab[(l + p) / 2];
+
+                int i = l;
+                int j = p;
+
+                // Podział tablicy na dwie części
+                while (i <= j)
+                {
+                    while (tab[i] < pivot)
+                    {
+                        i++;
+                    }
+                    while (tab[j] > pivot)
+                    {
+                        j--;
+                    }
+
+                    if (i <= j)
+                    {
+                        int temp = tab[i];
+                        tab[i] = tab[j];
+                        tab[j] = temp;
+                        i++;
+                        j--;
+                    }
+                }
+
+                if (l < j)
+                {
+                    quick(tab, l, j);
+                }
+                if (i < p)
+                {
+                    quick(tab, i, p);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            wygenerowanatablica = generujtab(10, 1, 100);
+            textBox2.Text = "Wygenerowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+            bubble(wygenerowanatablica);
+            textBox1.Text = "Posortowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            wygenerowanatablica = generujtab(10, 1, 100);
+            textBox3.Text = "Wygenerowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+            insert(wygenerowanatablica);
+            textBox4.Text = "Posortowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            wygenerowanatablica = generujtab(10, 1, 100);
+            textBox5.Text = "Wygenerowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+            quick(wygenerowanatablica,0,wygenerowanatablica.Length - 1);
+            textBox6.Text = "Posortowana tablica: [" + string.Join(",", wygenerowanatablica) + "]";
+        }
+    }
+}

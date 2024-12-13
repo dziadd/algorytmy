@@ -1,0 +1,147 @@
+using System.CodeDom.Compiler;
+using System.Collections.Concurrent;
+using System;
+
+namespace kolokwium_nauka
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        static int[] generujtab(int dlugosc)
+        {
+            int[] tab = new int[dlugosc];
+            Random random = new Random();
+            for (int i = 0; i < dlugosc; i++)
+            {
+                tab[i] = random.Next(1, 100);
+            }
+            return tab;
+        }
+
+        int[] tab;
+
+        public static void insert(int[] tab)
+        {
+            for (int i = 0; i < tab.Length; i++)
+            {
+                int klucz = tab[i];
+                int j = i - 1;
+
+                while (j >= 0 && tab[j] > klucz)
+                {
+                    tab[j + 1] = tab[j];
+                    j--;
+                }
+
+                tab[j + 1] = klucz;
+            }
+        }
+
+
+
+
+        public static void quick(int[] tab, int lewo, int prawo)
+        {
+                int pivot = tab[(lewo + prawo) / 2];
+                int i = lewo;
+                int j = prawo;
+
+                while (i <= j)
+                {
+                    while (tab[i] < pivot) i++;
+
+                    while (tab[j] > pivot) j--;
+
+                    if (i <= j)
+                    {
+                        swap(tab, i, j);
+                        i++;
+                        j--;
+
+                    }
+                }
+                if (lewo < j) quick(tab, lewo, j);
+
+                if (prawo > i) quick(tab, i, prawo);
+        }
+
+        public static void swap(int[] tab, int i, int j)
+        {
+            int temp = tab[i];
+            tab[i] = tab[j];
+            tab[j] = temp;
+        }
+
+
+   
+
+        public static void bubble(int[] tab)
+        {
+            int temp = 0;
+            for(int i = 0;i< tab.Length; i++)
+            {
+                for(int j = 0; j < tab.Length - 1; j++)
+                {
+                    while(tab[j] > tab[j + 1])
+                    {
+                        temp = tab[j];
+                        tab[j]= tab[j + 1];
+                        tab[j+1] = temp;
+                    }
+                }
+            }
+        }
+
+      public static void counting(int[] tab)
+        {
+            int max = tab[0];
+            int min = tab[0];
+
+            foreach(int num in tab)
+            {
+                if (num > max) max = num;
+                if (num < min) min = num;
+            }
+
+            int range = max - min + 1;
+            int[] count = new int[range];
+            
+            foreach(int num in tab)
+            {
+                count[num - min]++;
+            }
+
+            int index = 0;
+            for(int i = 0; i < range; i++)
+            {
+                while (count[i] > 0)
+                {
+                    tab[index++] = i + min;
+                    count[i]--;
+                }
+            }
+        }
+
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            tab = generujtab(10);
+            textBox1.Text = string.Join(",", tab);
+            quick(tab, 0, tab.Length - 1);
+            textBox2.Text = string.Join(",", tab);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            tab = generujtab(10);
+            textBox3.Text = string.Join(",", tab);
+            counting(tab);
+            textBox4.Text = string.Join(",", tab);
+        }
+    }
+}

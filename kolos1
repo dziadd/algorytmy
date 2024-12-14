@@ -84,6 +84,13 @@ namespace kolokwium
                 if (prawo > i) quick(tab, i, prawo);
         }
 
+        public static void swap(int[] tab, int i, int j)
+        {
+            int temp = tab[i];
+            tab[i] = tab[j];
+            tab[j] = temp;
+        }
+
 
 
 

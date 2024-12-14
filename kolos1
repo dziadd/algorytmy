@@ -59,46 +59,29 @@ namespace kolokwium
             }
         }
 
-        static void quick(int[] tab, int l, int p)
+        public static void quick(int[] tab, int lewo, int prawo)
         {
-            if (l < p)
-            {
-                int pivot = tab[(l + p) / 2];
+                int pivot = tab[(lewo + prawo) / 2];
+                int i = lewo;
+                int j = prawo;
 
-                int i = l;
-                int j = p;
-
-                // Podział tablicy na dwie części
                 while (i <= j)
                 {
-                    while (tab[i] < pivot)
-                    {
-                        i++;
-                    }
-                    while (tab[j] > pivot)
-                    {
-                        j--;
-                    }
+                    while (tab[i] < pivot) i++;
+
+                    while (tab[j] > pivot) j--;
 
                     if (i <= j)
                     {
-                        int temp = tab[i];
-                        tab[i] = tab[j];
-                        tab[j] = temp;
+                        swap(tab, i, j);
                         i++;
                         j--;
+
                     }
                 }
+                if (lewo < j) quick(tab, lewo, j);
 
-                if (l < j)
-                {
-                    quick(tab, l, j);
-                }
-                if (i < p)
-                {
-                    quick(tab, i, p);
-                }
-            }
+                if (prawo > i) quick(tab, i, prawo);
         }
 
 

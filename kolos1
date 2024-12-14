@@ -93,6 +93,55 @@ namespace kolokwium
 
 
 
+        private void MergeSort(int[] tab1)
+        {
+            if (tab1.Length <= 1)
+            {
+                return;
+            }
+            int mid = tab1.Length / 2;
+            int[] lewo = new int[mid];
+            int[] prawo = new int[tab1.Length - mid];
+            for(int i = 0; i < mid; i++)
+            {
+                lewo[i] = tab1[i];
+            }
+            for(int i = mid; i < tab1.Length; i++)
+            {
+                prawo[i - mid] = tab1[i];
+            }
+            MergeSort(lewo);
+            MergeSort(prawo);
+
+            Merge(tab1, lewo, prawo);
+        }
+        private void Merge(int[] tab1, int[] lewo, int[] prawo)
+        {
+            int i = 0, j = 0, k = 0;
+            while (i < lewo.Length && j < prawo.Length)
+            {
+                if (lewo[i] <= prawo[j])
+                {
+                    tab1[k++] = lewo[i++];
+                }
+                else
+                {
+                    tab1[k++] = prawo[j++];
+                }
+            }
+            while (i < lewo.Length)
+            {
+                tab1[k++] = lewo[i++];
+            }
+            while (j < prawo.Length)
+            {
+                tab1[k++] = prawo[j++];
+            }
+        }
+
+
+
+
 
 
 

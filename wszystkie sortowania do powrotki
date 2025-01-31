@@ -1,0 +1,167 @@
+/******************************************************************************
+
+                            Online C# Compiler.
+                Code, Compile, Run and Debug C# program online.
+Write your code in this editor and press "Run" button to execute it.
+
+*******************************************************************************/
+
+using System;
+class HelloWorld {
+
+	public static int[] generuj(int dlugosc){
+	    int[] tab = new int[dlugosc];
+	    Random random = new Random();
+	    for(int i = 0; i < dlugosc; i++){
+	        tab[i] = random.Next(1,10);
+	    }
+	    return tab;
+	}
+	
+	
+	public static void bubble(int[] tab){
+	    for(int i = 0; i < tab.Length; i++){
+	        for(int j = 0; j < tab.Length - 1; j++){
+	            while(tab[j] > tab[j + 1]){
+	                int temp = tab[j];
+	                tab[j] = tab[j + 1];
+	                tab[j + 1] = temp;
+	            }
+	        }
+	    }
+	}
+	
+	public static void insert(int[] tab){
+	    for(int i = 0; i < tab.Length; i++){
+	        int klucz = tab[i];
+	        int j = i - 1;
+	        while(j >= 0 && tab[j] > klucz){
+	            tab[j + 1] = tab[j];
+	            j--;
+	        }
+	        tab[j + 1] = klucz;
+	    }
+	}
+	
+	public static void counting(int[]tab){
+	    int max = tab[0];
+	    int min = tab[0];
+	    
+	    foreach(int num in tab){
+	        if(num > max) max = num;
+	        if(num < min) min = num;
+	    }
+	    
+	    int range = max - min + 1;
+	    int[] count = new int[range];
+	    
+	    foreach(int num in tab){
+	        count[num - min]++;
+	    }
+	    
+	    int index = 0;
+	    for(int i = 0; i < range; i++){
+	        while(count[i] > 0){
+	            tab[index++] = i + min;
+	            count[i]--;
+	        }
+	    }
+	}
+	
+	public static void quick(int[] tab, int lewo, int prawo){
+	    if(lewo >= prawo) return;
+	    
+	    int pivot = tab[(lewo + prawo) / 2];
+	    int i = lewo, j = prawo;
+	    
+	    while(i <= j){
+	        while(tab[i] < pivot) i++;
+	        while(tab[j] > pivot) j--;
+	        
+	        if(i <= j){
+	            int temp = tab[i];
+	            tab[i] = tab[j];
+	            tab[j] = temp;
+	            i++;
+	            j--;
+	            
+	        }
+	    }
+	    
+	    quick(tab,lewo,j);
+	    quick(tab,i,prawo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public static void merge(int[] tab, int[] lewo, int[] prawo){
+	    int i = 0, j = 0, k = 0;
+	    
+	    while(i < lewo.Length && j < prawo.Length){
+	        if(lewo[i] <= prawo[j]){
+	            tab[k++] = lewo[i++];
+	        }
+	        else{
+	            tab[k++] = prawo[j++];
+	        }
+	    }
+	    
+	    while (i < lewo.Length){
+	        tab[k++] = lewo[i++];
+	    }
+	    
+	    while(j < prawo.Length){
+	        tab[k++] = prawo[j++];
+	    }
+	}
+	
+	public static void mergesort(int[] tab){
+	    if(tab.Length <= 1){
+	        return;
+	    }
+	    
+	    int mid = tab.Length / 2;
+	    int[] lewo = new int[mid];
+	    int[] prawo = new int[tab.Length - mid];
+	    
+	    for(int i = 0; i < mid; i++){
+	        lewo[i] = tab[i];
+	    }
+	    
+	    for(int i = mid; i < tab.Length; i++){
+	        prawo[i - mid] = tab[i];
+	    }
+	    
+	    mergesort(lewo);
+	    mergesort(prawo);
+	    merge(tab,lewo,prawo);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	static void Main() {
+		int[] tab = generuj(5);
+		Console.WriteLine(string.Join(", ", tab));
+// 		quick(tab,0,tab.Length - 1);
+// 		mergesort(tab);
+// 		bubble(tab);
+// 		insert(tab);
+		counting(tab);
+		Console.WriteLine(string.Join(", ", tab));
+	}
+}
